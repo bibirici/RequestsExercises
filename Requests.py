@@ -47,8 +47,8 @@ class APIrequests:
             print('Something went wrong with deleting the object')
 
         else:
-            APIrequests.checkResponse(self, response.status_code)
             print(f'DELETE status: {response.status_code}')
+            APIrequests.checkResponse(self, response.status_code)
 
 
     def postObject(self, obj, values):
