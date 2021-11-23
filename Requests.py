@@ -8,34 +8,19 @@ class APIrequests:
         self._URL = URL
         self._token = token
 
-    def getObject(self, obj, id=0):
-            if id == 0:
-                try:
-                    api_url = f'{self._URL}{obj}'
-                    response = requests.get(api_url)
-                    APIrequests.responses.append(response.status_code)
+    def getObject(self, obj, id=''):
+            try:
+                api_url = f'{self._URL}{obj}/{id}'
+                response = requests.get(api_url)
+                APIrequests.responses.append(response.status_code)
 
-                except:
-                    print('Something went wrong with object fetching')
-
-                else:
-                    print(response.json())
-                    print(f'GET status: {response.status_code}')
-                    APIrequests.checkResponse(self, response.status_code)
+            except:
+                print('Something went wrong with object fetching')
 
             else:
-                try:
-                    api_url = f'{self._URL}{obj}/{id}'
-                    response = requests.get(api_url)
-                    APIrequests.responses.append(response.status_code)
-
-                except:
-                    print('Something went wrong with object fetching')
-
-                else:
-                    print(response.json())
-                    print(f'GET status: {response.status_code}')
-                    APIrequests.checkResponse(self, response.status_code)
+                print(response.json())
+                print(f'GET status: {response.status_code}')
+                APIrequests.checkResponse(self, response.status_code)
 
     def deleteObject(self, obj, id):
         try:
