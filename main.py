@@ -1,25 +1,73 @@
-import requests
-import objects
-import Requests
+import users
+import posts
+import comments
+import todos
+import cleanups
+import unittest
 
-a1 = Requests.APIrequests("https://gorest.co.in/public/v1/", '3d987e4a7c44200d76deca198fbef4b2b269c3b052afb6489591a6af7ecc6bb1')
-values_users = ['abcde', 'abcde@yahoo.com', 'male', 'active']
-values_posts = [14, 'asd1', 'asd1']
-values_comments = [14, 'asd123', 'asd123@yahoo.com', 'body']
-values_todos = [14, 'title', '2021-12-15T00:00:00.000+05:30', 'pending']
-a1.getObject("users", 2504)
-a1.getObject("posts")
-a1.getObject("comments")
-a1.getObject("todos")
-a1.deleteObject('users', 2)
-a1.deleteObject('posts', 2)
-a1.deleteObject('comments', 2)
-a1.deleteObject('todos', 2)
-a1.postObject('users', values_users)
-a1.postObject('posts', values_posts)
-a1.postObject('comments', values_comments)
-a1.postObject('todos', values_todos)
-print(Requests.APIrequests.responses)
-print(Requests.APIrequests.operations)
-a1.cleanup(Requests.APIrequests.operations)
+class UserTesting(unittest.TestCase):
 
+    def test_get_user(self):
+        u = users.Users()
+        assert u.get_user()
+
+    def test_add_user(self):
+        u = users.Users()
+        assert u.add_user('asdfag', 'asdfas444@yahoo.com', 'male', 'active')
+
+    def test_delete_user(self):
+        u = users.Users()
+        assert u.delete_user(31)
+
+class PostTesting(unittest.TestCase):
+
+    def test_get_post(self):
+        p = posts.Posts()
+        assert p.get_post()
+
+    def test_add_post(self):
+        p = posts.Posts()
+        assert p.add_post(17, 'asd1', 'asd1')
+
+    def test_delete_post(self):
+        p = posts.Posts()
+        assert p.delete_post(26)
+
+class CommentTesting(unittest.TestCase):
+
+    def test_get_comment(self):
+        c = comments.Comments()
+        assert c.get_comment()
+
+    def test_add_comment(self):
+        c = comments.Comments()
+        assert c.add_comment(2, 'asd123', 'asd123@yahoo.com', 'body')
+
+    def test_delete_comment(self):
+        c = comments.Comments()
+        assert c.delete_comment(34)
+
+class TodoTesting(unittest.TestCase):
+    def test_get_todo(self):
+        t = todos.Todos()
+        assert t.get_todo()
+
+    def test_add_todo(self):
+        t = todos.Todos()
+        assert t.add_todo(17, 'title', '2021-12-15T00:00:00.000+05:30', 'pending')
+
+    def test_delete_todo(self):
+        t = todos.Todos()
+        assert t.delete_todo(14)
+
+class CleanupTesting(unittest.TestCase):
+
+    def test_cleanup(self):
+        cl = cleanups.Cleanup()
+        t = todos.Todos()
+        t.add_todo(17, 'title', '2021-12-15T00:00:00.000+05:30', 'pending')
+        t.add_todo(17, 'title', '2021-11-15T00:00:00.000+05:30', 'completed')
+        cl.cleanup()
+
+if __name__ == '__main__':
+    unittest.main()
