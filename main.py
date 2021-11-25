@@ -13,11 +13,11 @@ class UserTesting(unittest.TestCase):
 
     def test_add_user(self):
         u = users.Users()
-        assert u.add_user('asdfag', 'asdfas444@yahoo.com', 'male', 'active')
+        assert u.add_user('asdfag', 'asdfas8172@yahoo.com', 'male', 'active')
 
     def test_delete_user(self):
         u = users.Users()
-        assert u.delete_user(31)
+        assert u.delete_user(42)
 
 class PostTesting(unittest.TestCase):
 
@@ -27,11 +27,11 @@ class PostTesting(unittest.TestCase):
 
     def test_add_post(self):
         p = posts.Posts()
-        assert p.add_post(17, 'asd1', 'asd1')
+        assert p.add_post(46, 'asd1', 'asd1')
 
     def test_delete_post(self):
         p = posts.Posts()
-        assert p.delete_post(26)
+        assert p.delete_post(22)
 
 class CommentTesting(unittest.TestCase):
 
@@ -41,11 +41,11 @@ class CommentTesting(unittest.TestCase):
 
     def test_add_comment(self):
         c = comments.Comments()
-        assert c.add_comment(2, 'asd123', 'asd123@yahoo.com', 'body')
+        assert c.add_comment(3, 'asd123', 'asd123@yahoo.com', 'body')
 
     def test_delete_comment(self):
         c = comments.Comments()
-        assert c.delete_comment(34)
+        assert c.delete_comment(39)
 
 class TodoTesting(unittest.TestCase):
     def test_get_todo(self):
@@ -58,7 +58,7 @@ class TodoTesting(unittest.TestCase):
 
     def test_delete_todo(self):
         t = todos.Todos()
-        assert t.delete_todo(14)
+        assert t.delete_todo(26)
 
 class CleanupTesting(unittest.TestCase):
 

@@ -27,7 +27,7 @@ class Users:
             print(response.json())
             print(f'Status code: {response.status_code}')
             try:
-                cleanups.Cleanup.cleanups.append({'object': 'users', 'id': response.json()['data']['id']})
+                cleanups.Cleanup.objects.append({'object': 'users', 'id': response.json()['data']['id']})
             except:
                 print('Response may be empty')
         return response.status_code
