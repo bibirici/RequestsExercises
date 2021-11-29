@@ -55,8 +55,8 @@ class TOML:
         text = toml.load(path)
         for id in TOML.ids:
             for post in text.get('posts'):
-                posts += 1
-                p.add(id, post.get('title'), post.get('body'))
+                if p.add(id, post.get('title'), post.get('body')):
+                    posts += 1
 
         return posts
 
@@ -67,6 +67,6 @@ class TOML:
         text = toml.load(path)
         for id in TOML.ids:
             for todo in text.get('todos'):
-                todos += 1
-                t.add(id, todo.get('title'), todo.get('due_on'), todo.get('status'))
+                if t.add(id, todo.get('title'), todo.get('due_on'), todo.get('status')):
+                    todos += 1
         return todos
