@@ -1,4 +1,5 @@
 import requests
+import time
 
 class Object:
     """
@@ -8,8 +9,11 @@ class Object:
         acess_token: token used for authentication for post/delete calls
     """
     objects = []
-    access_token = '58409336e33cd2a7e8f6858c3db7f26b7a2117bcaf56edcdc767c1cf130d9f47'
+    access_token = 'f226d8100875a550ed64ddcb80bc1a30f799b7d5621ccc6febf7ff3bc9936965'
     my_headers = {'Authorization': 'Bearer ' + access_token}
+
+    def __init__(self):
+        self.url = "https://gorest.co.in/public"
 
     def check_response(func):
         """
@@ -18,13 +22,13 @@ class Object:
         Parameters:
             func: function that is decorated
         """
-        def wrapper(self, *args):
+        def wrapper(self, **args):
             """
             wrapper method modifies the func function
             Parameters:
-                *args: func arguments
+                **args: func arguments
             """
-            response = func(self, *args)
+            response = func(self, **args)
             if response >= 200 and response < 300:
                 print('Status OK\n')
                 return True
@@ -35,7 +39,7 @@ class Object:
 
 
     @check_response
-    def add(self, *item):
+    def add(self, **item):
         """
         Method that adds an object
         Parameters differ for every type of object:
@@ -44,10 +48,13 @@ class Object:
             Comments: post_id, name, email, body
             Todos: user_id, title, due_on, status
         """
-        values = [el for el in item]
-        d = {self.keys[i] : values[i] for i in range(len(self.keys))}
+        d = {key:value for key, value in item.items()}
+
         try:
             response = requests.post(self.url, json=d, headers=Object.my_headers)
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
+            time.sleep(2)
         except:
             print('Something went wrong with creating the object')
         else:
@@ -69,6 +76,9 @@ class Object:
 
         try:
             response = requests.get(f'{self.url}/{id}')
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
+            time.sleep(2)
         except:
             print('Something went wrong with object fetching')
 
@@ -87,6 +97,9 @@ class Object:
 
         try:
             response = requests.delete(f'{self.url}/{id}', headers=Object.my_headers)
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
+            time.sleep(2)
         except:
             print('Something went wrong with deleting the object')
         else:
@@ -104,7 +117,7 @@ class Object:
         for obj in Object.objects:
             url = f'{obj.get("type").url}/{obj.get("id")}'
             try:
-                response = requests.delete(url, headers=Object.my_headers)
+                response = obj.get("type").delete(obj.get("id"))
             except:
                 print('Something went wrong with deleting the item')
             else:
