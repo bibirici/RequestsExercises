@@ -1,0 +1,32 @@
+[[users]]
+name = "test1"
+email = "user_test11@yahoo.com"
+gender = "male"
+status = "active"
+
+[[users]]
+name = "test2"
+email = "user_test12@yahoo.com"
+gender = "male"
+status = "active"
+
+[objects]
+
+[[objects.todos]]
+title = 'title'
+due_on = '2021-12-15T00:00:00.000+05:30'
+status = 'pending'
+
+[[objects.todos]]
+title = 'title'
+due_on = '2021-12-11T00:00:00.000+02:30'
+status = 'pending'
+
+[[objects.posts]]
+title = 'title'
+body = 'body'
+
+[[objects.posts]]
+title = 'title1'
+body = 'body1'
+

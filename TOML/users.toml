@@ -1,0 +1,31 @@
+title = "users TOML"
+
+[[users]]
+name = "test1"
+email = "user_test1@yahoo.com"
+gender = "male"
+status = "active"
+
+[[users]]
+name = "test2"
+email = "user_test2@yahoo.com"
+gender = "male"
+status = "active"
+
+[[users]]
+name = "test3"
+email = "user_test3@yahoo.com"
+gender = "male"
+status = "active"
+
+[[users]]
+name = "test4"
+email = "user_test4@yahoo.com"
+gender = "male"
+status = "active"
+
+[[users]]
+name = "test5"
+email = "user_test5@yahoo.com"
+gender = "male"
+status = "active"

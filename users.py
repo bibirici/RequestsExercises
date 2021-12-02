@@ -10,7 +10,7 @@ class Users(Object):
     def get(self, id=''):
         return super().get(id = id)
 
-    def delete(self, id=''):
+    def delete(self, id):
         return super().delete(id = id)
 
 

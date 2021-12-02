@@ -80,18 +80,27 @@ import time
 #         time.sleep(1)
 
 class TestTOML:
-    @pytest.mark.skip
+
     def test_users_toml(self):
         users = TOML.create_users()
         assert users == TOML.get_number_of_users()
 
-    @pytest.mark.skip
     def test_posts_toml(self):
-        users = TOML.create_users()
         posts = TOML.create_posts_for_user()
         assert posts == TOML.get_number_of_posts()
 
     def test_todos_toml(self):
-        users = TOML.create_users()
         todos = TOML.create_todos_for_user()
         assert todos == TOML.get_number_of_todos()
+
+    def test_users_objects_toml(self):
+        t = TOML.create_users_objects()
+        u = TOML.get_number_of_users_objects()
+        assert t == u
+
+    def test_users_objects_toml1(self):
+        t = TOML.create_users_objects()
+        u = TOML.get_number_of_users_objects()
+        assert t == u
+
+
