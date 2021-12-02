@@ -13,7 +13,6 @@ class TOML:
     users_objects_file = "C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/users_objects.toml"
     posts_file = "C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/posts.toml"
     todos_file = "C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/todos.toml"
-    created_users = []
 
 
     @staticmethod
