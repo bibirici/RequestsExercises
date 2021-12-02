@@ -48,7 +48,7 @@ class TOML:
         text = toml.load(TOML.users_file)
         u = Users()
         users = text.get('users')
-        Object.objects.clear()
+        Object.cleanup()
         time.sleep(1)
         for user in users:
             u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
@@ -63,7 +63,7 @@ class TOML:
         objects = text.get('objects')
         all_items = len([objects.get(obj) for obj in lst])
         items_to_add = random.randint(1, all_items)
-        Object.objects.clear()
+        Object.cleanup()
         u = Users()
         for _ in range(items_to_add):
             obj = random.choice(lst)
@@ -87,7 +87,7 @@ class TOML:
                     if t.add(id, objects['todos'][item].get('title'), objects['todos'][item].get('due_on'), objects['todos'][item].get('status')):
                         nr += 1
                 time.sleep(3)
-        Object.objects.clear()
+        Object.cleanup()
         return nr
 
 
