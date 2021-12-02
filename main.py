@@ -79,27 +79,22 @@ import time
 #         Object.cleanup()
 #         time.sleep(1)
 
-class TestTOML:
+class TestTOML(unittest.TestCase):
 
-    def test_users_toml(self):
-        users = TOML.create_users()
-        assert users == TOML.get_number_of_users()
+    def test_toml1(self):
+        t = TOML.toml_input(TOML.posts_file)
+        u = TOML.get_number_of_objects(TOML.posts_file)
+        assert t == u
 
-    def test_posts_toml(self):
-        posts = TOML.create_posts_for_user()
-        assert posts == TOML.get_number_of_posts()
+    def test_toml2(self):
+        t = TOML.toml_input(TOML.todos_file)
+        u = TOML.get_number_of_objects(TOML.todos_file)
+        assert t == u
 
-    def test_todos_toml(self):
-        todos = TOML.create_todos_for_user()
-        assert todos == TOML.get_number_of_todos()
+    def test_toml3(self):
+        t = TOML.toml_input(TOML.input_file)
+        u = TOML.get_number_of_objects(TOML.input_file)
+        assert t == u
 
-    def test_users_objects_toml(self):
-        t = TOML.create_users_objects()
-        u = TOML.get_number_of_users_objects()
-        assert t >= u
 
-    def test_users_objects_toml1(self):
-        t = TOML.create_users_objects()
-        u = TOML.get_number_of_users_objects()
-        assert t >= u
 

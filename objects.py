@@ -29,9 +29,9 @@ class Object:
                 **args: func arguments
             """
             response = func(self, **args)
-            if response >= 200 and response < 300:
+            if response.status_code >= 200 and response.status_code < 300:
                 print('Status OK\n')
-                return True
+                return response
             else:
                 print('Status Failed\n')
                 return False
@@ -64,7 +64,7 @@ class Object:
                 Object.objects.append({'type':self, 'object': self.__class__.__name__, 'id': response.json()['data']['id']})
             except:
                 print('Response may be empty')
-        return response.status_code
+        return response
 
     @check_response
     def get(self, id=''):
@@ -85,7 +85,7 @@ class Object:
         else:
             print(response.json())
             print(f'GET status: {response.status_code}')
-        return response.status_code
+        return response
 
     @check_response
     def delete(self, id):
@@ -104,7 +104,7 @@ class Object:
             print('Something went wrong with deleting the object')
         else:
             print(f'DELETE status: {response.status_code}')
-        return response.status_code
+        return response
 
     @staticmethod
     def cleanup():
@@ -117,13 +117,15 @@ class Object:
         for obj in Object.objects:
             url = f'{obj.get("type").url}/{obj.get("id")}'
             try:
+                time.sleep(2)
                 response = obj.get("type").delete(obj.get("id"))
             except:
                 print('Something went wrong with deleting the item')
             else:
-                print(f'Deleting item {Object.objects.index(obj) + 1}')
-                nr += 1
-        print (Object.objects)
+                print(f'Deleting item {Object.objects.index(obj) + 1}: id = {obj.get("id")}')
+                if response:
+                    nr += 1
+
         if nr == len(Object.objects):
             print("Cleanup successful")
             print(f'{nr}/{len(Object.objects)} items deleted\n')

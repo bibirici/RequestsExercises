@@ -1,3 +1,14 @@
 [[posts]]
-title = 'asd'
-body = 'asd'
+user_id = 22
+title = 'asd1'
+body = 'asd1'
+
+[[posts]]
+user_id = 22
+title = 'asd2'
+body = 'asd2'
+
+[[posts]]
+user_id = 22
+title = 'asd3'
+body = 'asd3'

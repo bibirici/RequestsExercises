@@ -1,0 +1,26 @@
+[[users]]
+name = "test1"
+email = "User_test1ssACeed1@yahoo.com"
+gender = "male"
+status = "active"
+
+	[users.todos]
+	title = 'title'
+	due_on = '2021-12-11T00:00:00.000+02:30'
+	status = 'pending'
+
+[[users]]
+name = "test2"
+email = "User_test2aaCSeed532a@yahoo.com"
+gender = "male"
+status = "active"
+
+	[users.todos]
+	title = 'title'
+	due_on = '2021-12-15T00:00:00.000+05:30'
+	status = 'pending'
+
+	[users.posts]
+	title = 'title1'
+	body = 'body1'
+
