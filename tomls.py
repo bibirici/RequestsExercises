@@ -15,11 +15,6 @@ class TOML:
     todos_file = "C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/todos.toml"
     created_users = []
 
-    @staticmethod
-    def delete_users():
-        u = Users()
-        for id in TOML.created_users:
-            u.delete(id)
 
     @staticmethod
     def get_number_of_users():
@@ -58,8 +53,7 @@ class TOML:
         time.sleep(1)
         for user in users:
             u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
-        TOML.created_users = [obj.get('id') for obj in Object.objects]
-        return len(TOML.created_users)
+        return len(Object.objects)
 
     @staticmethod
     def create_users_objects():
@@ -79,23 +73,21 @@ class TOML:
                 p = Posts()
                 for user in users:
                     u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
-                TOML.created_users = [obj.get('id') for obj in Object.objects]
-                for id in TOML.created_users:
+                ids = [obj.get('id') for obj in Object.objects if obj.get('object') == 'Users']
+                for id in ids:
                     if p.add(id, objects['posts'][item].get('title'), objects['posts'][item].get('body')):
                         nr += 1
                 time.sleep(3)
-                TOML.delete_users()
             elif obj == 'todos':
                 item = random.randint(0, len(objects.get('todos')) - 1)
                 t = Todos()
                 for user in users:
                     u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
-                TOML.created_users = [obj.get('id') for obj in Object.objects]
-                for id in TOML.created_users:
+                ids = [obj.get('id') for obj in Object.objects if obj.get('object') == 'Users']
+                for id in ids:
                     if t.add(id, objects['todos'][item].get('title'), objects['todos'][item].get('due_on'), objects['todos'][item].get('status')):
                         nr += 1
                 time.sleep(3)
-                TOML.delete_users()
         Object.objects.clear()
         return nr
 
@@ -105,8 +97,8 @@ class TOML:
         posts = 0
         p = Posts()
         text = toml.load(TOML.posts_file)
-        TOML.created_users = [obj.get('id') for obj in Object.objects]
-        for id in TOML.created_users:
+        ids = [obj.get('id') for obj in Object.objects if obj.get('object') == 'Users']
+        for id in ids:
             for post in text.get('posts'):
                 if p.add(id, post.get('title'), post.get('body')):
                     posts += 1
@@ -118,7 +110,8 @@ class TOML:
         todos = 0
         t = Todos()
         text = toml.load(TOML.todos_file)
-        for id in TOML.created_users:
+        ids = [obj.get('id') for obj in Object.objects if obj.get('object') == 'Users']
+        for id in ids:
             for todo in text.get('todos'):
                 if t.add(id, todo.get('title'), todo.get('due_on'), todo.get('status')):
                     todos += 1

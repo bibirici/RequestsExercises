@@ -1,12 +1,12 @@
 [[users]]
 name = "test1"
-email = "user_test1111@yahoo.com"
+email = "User_test11111@yahoo.com"
 gender = "male"
 status = "active"
 
 [[users]]
 name = "test2"
-email = "user_test2222@yahoo.com"
+email = "User_test22222@yahoo.com"
 gender = "male"
 status = "active"
 

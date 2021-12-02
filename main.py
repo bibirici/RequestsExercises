@@ -91,7 +91,6 @@ class TestTOML:
 
     def test_todos_toml(self):
         todos = TOML.create_todos_for_user()
-        TOML.delete_users()
         assert todos == TOML.get_number_of_todos()
 
     def test_users_objects_toml(self):
@@ -99,10 +98,6 @@ class TestTOML:
         u = TOML.get_number_of_users_objects()
         assert t >= u
 
-    def test_users_objects_toml1(self):
-        t = TOML.create_users_objects()
-        u = TOML.get_number_of_users_objects()
-        assert t >= u
 
 
 
