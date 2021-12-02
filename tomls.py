@@ -68,31 +68,34 @@ class TOML:
         text = toml.load(TOML.users_objects_file)
         users = text.get('users')
         objects = text.get('objects')
-        obj = random.choice(lst)
-        item = random.randint(0, len(objects.get(obj)) - 1)
+        all_items = len([objects.get(obj) for obj in lst])
+        items_to_add = random.randint(1, all_items)
         Object.objects.clear()
-        if obj == 'posts':
-            p = Posts()
-            u = Users()
-            for user in users:
-                u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
-            TOML.created_users = [obj.get('id') for obj in Object.objects]
-            for id in TOML.created_users:
-                if p.add(id, objects['posts'][item].get('title'), objects['posts'][item].get('body')):
-                    nr += 1
-            time.sleep(3)
-            TOML.delete_users()
-        elif obj == 'todos':
-            t = Todos()
-            u = Users()
-            for user in users:
-                u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
-            TOML.created_users = [obj.get('id') for obj in Object.objects]
-            for id in TOML.created_users:
-                if t.add(id, objects['todos'][item].get('title'), objects['todos'][item].get('due_on'), objects['todos'][item].get('status')):
-                    nr += 1
-            time.sleep(3)
-            TOML.delete_users()
+        u = Users()
+        for _ in range(items_to_add):
+            obj = random.choice(lst)
+            if obj == 'posts':
+                item = random.randint(0, len(objects.get('posts')) - 1)
+                p = Posts()
+                for user in users:
+                    u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
+                TOML.created_users = [obj.get('id') for obj in Object.objects]
+                for id in TOML.created_users:
+                    if p.add(id, objects['posts'][item].get('title'), objects['posts'][item].get('body')):
+                        nr += 1
+                time.sleep(3)
+                TOML.delete_users()
+            elif obj == 'todos':
+                item = random.randint(0, len(objects.get('todos')) - 1)
+                t = Todos()
+                for user in users:
+                    u.add(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
+                TOML.created_users = [obj.get('id') for obj in Object.objects]
+                for id in TOML.created_users:
+                    if t.add(id, objects['todos'][item].get('title'), objects['todos'][item].get('due_on'), objects['todos'][item].get('status')):
+                        nr += 1
+                time.sleep(3)
+                TOML.delete_users()
         Object.objects.clear()
         return nr
 
