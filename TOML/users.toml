@@ -1,31 +1,17 @@
-title = "users TOML"
-
 [[users]]
 name = "test1"
-email = "User_test111avaaaa@yahoo.com"
+email = "User_testsAAVaasd1@yahoo.com"
 gender = "male"
 status = "active"
 
 [[users]]
 name = "test2"
-email = "User_test222avaaaa@yahoo.com"
+email = "User_testVAS2s3ed1@yahoo.com"
 gender = "male"
 status = "active"
 
 [[users]]
 name = "test3"
-email = "User_test333aavaaa@yahoo.com"
-gender = "male"
-status = "active"
-
-[[users]]
-name = "test4"
-email = "User_test444aavaaa@yahoo.com"
-gender = "male"
-status = "active"
-
-[[users]]
-name = "test5"
-email = "User_test555aaavaa@yahoo.com"
+email = "User_test1s1GFed1@yahoo.com"
 gender = "male"
 status = "active"

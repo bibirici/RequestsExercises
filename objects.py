@@ -22,14 +22,18 @@ class Object:
         Parameters:
             func: function that is decorated
         """
-        def wrapper(self, **args):
+        def wrapper(
+                self,
+                **args
+            ):
             """
             wrapper method modifies the func function
             Parameters:
                 **args: func arguments
             """
-            response = func(self, **args)
-            if response.status_code >= 200 and response.status_code < 300:
+            response = func(self,
+                            **args)
+            if 200 <= response.status_code < 300:
                 print('Status OK\n')
                 return response
             else:
@@ -39,7 +43,10 @@ class Object:
 
 
     @check_response
-    def add(self, **item):
+    def add(
+            self,
+            **item
+        ):
         """
         Method that adds an object
         Parameters differ for every type of object:
@@ -51,7 +58,11 @@ class Object:
         d = {key:value for key, value in item.items()}
 
         try:
-            response = requests.post(self.url, json=d, headers=Object.my_headers)
+            response = requests.post(
+                self.url,
+                json=d,
+                headers=Object.my_headers
+            )
         except requests.exceptions.ConnectionError:
             print("Connection Error")
             time.sleep(2)
@@ -61,13 +72,22 @@ class Object:
             print(response.json())
             print(f'Status code: {response.status_code}')
             try:
-                Object.objects.append({'type':self, 'object': self.__class__.__name__, 'id': response.json()['data']['id']})
+                Object.objects.append(
+                    {
+                        'type':self,
+                        'object': self.__class__.__name__,
+                        'id': response.json()['data']['id']
+                    }
+                )
             except:
                 print('Response may be empty')
         return response
 
     @check_response
-    def get(self, id=''):
+    def get(
+            self,
+            id=''
+        ):
         """
         Method that retrieves an object or more objects
         Parameters:
@@ -88,7 +108,10 @@ class Object:
         return response
 
     @check_response
-    def delete(self, id):
+    def delete(
+            self,
+            id
+        ):
         """
         Method that deletes an object
         Parameters:
@@ -96,7 +119,10 @@ class Object:
         """
 
         try:
-            response = requests.delete(f'{self.url}/{id}', headers=Object.my_headers)
+            response = requests.delete(
+                f'{self.url}/{id}',
+                headers=Object.my_headers
+            )
         except requests.exceptions.ConnectionError:
             print("Connection Error")
             time.sleep(2)
@@ -115,7 +141,6 @@ class Object:
         print("Cleanup started")
         print(f'{len(Object.objects)} items to be deleted')
         for obj in Object.objects:
-            url = f'{obj.get("type").url}/{obj.get("id")}'
             try:
                 time.sleep(2)
                 response = obj.get("type").delete(obj.get("id"))

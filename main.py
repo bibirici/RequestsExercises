@@ -81,20 +81,22 @@ import time
 
 class TestTOML(unittest.TestCase):
 
-    def test_toml1(self):
-        t = TOML.toml_input(TOML.posts_file)
-        u = TOML.get_number_of_objects(TOML.posts_file)
-        assert t == u
+    # def test_toml1(self):
+    #     TOML.toml_input(TOML.posts_file)
+    #     u = TOML.get_number_of_objects(TOML.posts_file)
+    #
+    # def test_toml2(self):
+    #     TOML.toml_input(TOML.todos_file)
+    #     u = TOML.get_number_of_objects(TOML.todos_file)
+    #
+    # def test_toml3(self):
+    #     TOML.toml_input(TOML.input_file)
+    #     u = TOML.get_number_of_objects(TOML.input_file)
 
-    def test_toml2(self):
-        t = TOML.toml_input(TOML.todos_file)
-        u = TOML.get_number_of_objects(TOML.todos_file)
-        assert t == u
 
-    def test_toml3(self):
-        t = TOML.toml_input(TOML.input_file)
-        u = TOML.get_number_of_objects(TOML.input_file)
-        assert t == u
+    def test_create_objects(self):
+        TOML.toml_input(TOML.users_file)
+        TOML.create_object(TOML.objects_file)
 
 
 
