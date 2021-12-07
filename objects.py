@@ -1,6 +1,7 @@
 import requests
 import time
 
+
 class Object:
     """
     Parent Class representing an object
@@ -14,6 +15,7 @@ class Object:
 
     def __init__(self):
         self.url = "https://gorest.co.in/public"
+        self.id = None
 
     def check_response(func):
         """
@@ -22,40 +24,34 @@ class Object:
         Parameters:
             func: function that is decorated
         """
-        def wrapper(
-                self,
-                **args
-            ):
+
+        def wrapper(self, **args):
             """
             wrapper method modifies the func function
             Parameters:
                 **args: func arguments
             """
-            response = func(self,
-                            **args)
+            response = func(self, **args)
             if 200 <= response.status_code < 300:
                 print('Status OK\n')
                 return response
             else:
                 print('Status Failed\n')
                 return False
+
         return wrapper
 
-
     @check_response
-    def add(
-            self,
-            **item
-        ):
+    def add(self, **item):
         """
         Method that adds an object
-        Parameters differ for every type of object:
+        Parameters differ for every class that inherits this class:
             Posts: user_id, title, body
             Users: name, email, gender, status
             Comments: post_id, name, email, body
             Todos: user_id, title, due_on, status
         """
-        d = {key:value for key, value in item.items()}
+        d = {key: value for key, value in item.items()}
 
         try:
             response = requests.post(
@@ -71,10 +67,11 @@ class Object:
         else:
             print(response.json())
             print(f'Status code: {response.status_code}')
+            self.id = response.json()['data']['id']
             try:
                 Object.objects.append(
                     {
-                        'type':self,
+                        'type': self,
                         'object': self.__class__.__name__,
                         'id': response.json()['data']['id']
                     }
@@ -84,18 +81,13 @@ class Object:
         return response
 
     @check_response
-    def get(
-            self,
-            id=''
-        ):
+    def get(self):
         """
         Method that retrieves an object or more objects
-        Parameters:
-            id(optional): object's id, if not included, method will retrieve all objects
         """
 
         try:
-            response = requests.get(f'{self.url}/{id}')
+            response = requests.get(f'{self.url}/{self.id}')
         except requests.exceptions.ConnectionError:
             print("Connection Error")
             time.sleep(2)
@@ -108,19 +100,14 @@ class Object:
         return response
 
     @check_response
-    def delete(
-            self,
-            id
-        ):
+    def delete(self):
         """
-        Method that deletes an object
-        Parameters:
-            id: user's id
+        Method that deletes the current object
         """
 
         try:
             response = requests.delete(
-                f'{self.url}/{id}',
+                f'{self.url}/{self.id}',
                 headers=Object.my_headers
             )
         except requests.exceptions.ConnectionError:
@@ -132,30 +119,40 @@ class Object:
             print(f'DELETE status: {response.status_code}')
         return response
 
-    @staticmethod
-    def cleanup():
+    @classmethod
+    def get_all(cls):
+        for obj in Object.objects:
+            if obj.get('object') == cls.__name__ or cls.__name__ == 'Object':
+                obj.get('type').get()
+
+    @classmethod
+    def cleanup(cls):
         """
         Method that performs a cleanup for all created objects
         """
         nr = 0
+        if cls.__name__ != 'Object':
+            items = [obj for obj in Object.objects if obj.get('object') == cls.__name__]
+        else:
+            items = Object.objects
         print("Cleanup started")
-        print(f'{len(Object.objects)} items to be deleted')
-        for obj in Object.objects:
+        print(f'{len(items)} items to be deleted')
+        for obj in items:
+            print(f'Deleting item {items.index(obj) + 1}: id = {obj.get("id")}')
             try:
-                time.sleep(2)
-                response = obj.get("type").delete(obj.get("id"))
+                time.sleep(1)
+                response = obj.get('type').delete()
             except:
                 print('Something went wrong with deleting the item')
             else:
-                print(f'Deleting item {Object.objects.index(obj) + 1}: id = {obj.get("id")}')
                 if response:
                     nr += 1
 
-        if nr == len(Object.objects):
+        if nr == len(items):
             print("Cleanup successful")
-            print(f'{nr}/{len(Object.objects)} items deleted\n')
+            print(f'{nr}/{len(items)} items deleted\n')
             return True
         else:
             print("Cleanup failed")
-            print(f'{nr}/{len(Object.objects)} items deleted\n')
+            print(f'{nr}/{len(items)} items deleted\n')
             return False

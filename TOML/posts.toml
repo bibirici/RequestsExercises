@@ -1,14 +1,15 @@
-[[posts]]
-user_id = 22
-title = 'asd1'
-body = 'asd1'
+[posts]
+	[posts.post1]
+	user_id = 1630
+	title = 'asd1'
+	body = 'asd1'
 
-[[posts]]
-user_id = 22
-title = 'asd2'
-body = 'asd2'
+	[posts.post2]
+	user_id = 1630
+	title = 'asd2'
+	body = 'asd2'
 
-[[posts]]
-user_id = 22
-title = 'asd3'
-body = 'asd3'
+	[posts.post3]
+	user_id = 1630
+	title = 'asd3'
+	body = 'asd3'

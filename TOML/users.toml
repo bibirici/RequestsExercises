@@ -1,17 +1,18 @@
-[[users]]
-name = "test1"
-email = "User_testsAAVaasd1@yahoo.com"
-gender = "male"
-status = "active"
+[users]
+	[users.user1]
+	name = "test1"
+	email = "User_test1AAAd11@yahoo.com"
+	gender = "male"
+	status = "active"
 
-[[users]]
-name = "test2"
-email = "User_testVAS2s3ed1@yahoo.com"
-gender = "male"
-status = "active"
+	[users.user2]
+	name = "test2"
+	email = "User_test2BBBad12@yahoo.com"
+	gender = "male"
+	status = "active"
 
-[[users]]
-name = "test3"
-email = "User_test1s1GFed1@yahoo.com"
-gender = "male"
-status = "active"
+	[users.user3]
+	name = "test3"
+	email = "User_test3CCCa13@yahoo.com"
+	gender = "male"
+	status = "active"

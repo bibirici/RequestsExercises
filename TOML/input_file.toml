@@ -1,26 +1,29 @@
-[[users]]
-name = "test1"
-email = "User_test1ssACeed1@yahoo.com"
-gender = "male"
-status = "active"
+[users]
+	[users.user1]
+	name = "test1"
+	email = "User_test1ssACAAseeasAda1@yahoo.com"
+	gender = "male"
+	status = "active"
+		[users.user1.todos]
+			[users.user1.todos.todo1]
+			title = 'title'
+			due_on = '2021-12-11T00:00:00.000+02:30'
+			status = 'pending'
 
-	[users.todos]
-	title = 'title'
-	due_on = '2021-12-11T00:00:00.000+02:30'
-	status = 'pending'
+	[users.user2]
+	name = "test2"
+	email = "User_test2aaCSesedsaAaAA532a@yahoo.com"
+	gender = "male"
+	status = "active"
 
-[[users]]
-name = "test2"
-email = "User_test2aaCSeed532a@yahoo.com"
-gender = "male"
-status = "active"
+		[users.user2.todos]
+			[users.user2.todos.todo1]
+			title = 'title'
+			due_on = '2021-12-15T00:00:00.000+05:30'
+			status = 'pending'
 
-	[users.todos]
-	title = 'title'
-	due_on = '2021-12-15T00:00:00.000+05:30'
-	status = 'pending'
-
-	[users.posts]
-	title = 'title1'
-	body = 'body1'
+		[users.user2.posts]
+			[users.user2.posts.post1]
+			title = 'title1'
+			body = 'body1'
 
