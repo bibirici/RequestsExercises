@@ -1,10 +1,8 @@
-import time
-
 import toml
 import random
-from users import Users
-from posts import Posts
-from todos import Todos
+from users import User
+from posts import Post
+from todos import Todo
 from objects import Object
 
 class TOML:
@@ -15,7 +13,6 @@ class TOML:
     input_file = "C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/input_file.toml"
     objects_file = "C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/objects.toml"
 
-
     @staticmethod
     def create_users(users):
         """
@@ -24,12 +21,17 @@ class TOML:
               users: a TOML file with one or more users
         """
         for user in users.values():
-            u = Users(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
-            user_id = u.add().json()['data']['id']
-            todos = user.get('todos',{})
-            TOML.create_todos(todos, user_id)
-            posts = user.get('posts',{})
-            TOML.create_posts(posts, user_id)
+            u1 = User(user.get('name'), user.get('email'), user.get('gender'), user.get('status'))
+            added_user = u1.add()
+            try:
+                user_id = added_user.json()['data']['id']
+                todos = user.get('todos',{})
+                TOML.create_todos(todos, user_id)
+                posts = user.get('posts',{})
+                TOML.create_posts(posts, user_id)
+            except Exception as err:
+                print(f"Can't get id of user: {err}")
+
 
     @staticmethod
     def create_posts(posts, uid = None):
@@ -43,12 +45,12 @@ class TOML:
                 uid can be 'r' for a random user
         """
         for post in posts.values():
-            if uid == 'r':
+            if uid == 'random':
                 user_id = TOML.get_random_user()
             else:
                 user_id = post.get('user_id', uid)
-            p = Posts(user_id, post.get('title'), post.get('body'))
-            p.add()
+            p1 = Post(user_id, post.get('title'), post.get('body'))
+            p1.add()
 
     @staticmethod
     def create_todos(todos, uid = None):
@@ -62,24 +64,29 @@ class TOML:
                 uid can be 'r' for a random user
         """
         for todo in todos.values():
-            if uid == 'r':
+            if uid == 'random':
                 user_id = TOML.get_random_user()
             else:
                 user_id = todo.get('user_id', uid)
-            t = Todos(user_id, todo.get('title'), todo.get('due_on'), todo.get('status'))
-            t.add()
+            t1 = Todo(user_id, todo.get('title'), todo.get('due_on'), todo.get('status'))
+            t1.add()
 
     @staticmethod
     def get_random_user():
         """
         Method that returns an id of a random user
         """
-        users = [user.get('id') for user in Object.objects if user.get('object') == 'Users']
-        user_id = random.choice(users)
-        return user_id
+        users = [user.get('id') for user in Object.objects if user.get('object') == 'User']
+        try:
+            user_id = random.choice(users)
+        except Exception as err:
+            print(err)
+        else:
+            return user_id
+
 
     @staticmethod
-    def toml_input(path):
+    def toml_input(path, t_users = None, p_users = None):
         """
         Method that parses an TOML file and create all the objects in that file
         Parameters:
@@ -90,8 +97,8 @@ class TOML:
         posts = text.get('posts', {})
         todos = text.get('todos', {})
         TOML.create_users(users)
-        TOML.create_posts(posts)
-        TOML.create_todos(todos)
+        TOML.create_posts(posts, p_users)
+        TOML.create_todos(todos, t_users)
 
 
 

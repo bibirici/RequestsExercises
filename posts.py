@@ -1,16 +1,24 @@
 from objects import Object
 
-class Posts(Object):
+class Post(Object):
 
     def __init__(self, user_id, title, body):
         """
         Constructor for Posts class
         """
-        self.url = "https://gorest.co.in/public/v1/posts"
         self.id = None
+        self.url = Object.base_url + '/posts'
         self.user_id = user_id
         self.title = title
         self.body = body
+
+    def get_create_dictionary(self):
+        json_add = {
+            'user_id': self.user_id,
+            'title': self.title,
+            'body': self.body
+        }
+        return json_add
 
     def add(self):
         """

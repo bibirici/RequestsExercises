@@ -1,6 +1,4 @@
 import requests
-import time
-
 
 class Object:
     """
@@ -10,12 +8,13 @@ class Object:
         acess_token: token used for authentication for post/delete calls
     """
     objects = []
-    access_token = 'f226d8100875a550ed64ddcb80bc1a30f799b7d5621ccc6febf7ff3bc9936965'
+    access_token = '08ff96950f7b2f2094fcaf9e15fcc3e70170677916fdf997ed25f57eb6f63d73'
     my_headers = {'Authorization': 'Bearer ' + access_token}
+    base_url = "https://gorest.co.in/public/v1"
 
     def __init__(self):
-        self.url = "https://gorest.co.in/public"
         self.id = None
+
 
     def check_response(func):
         """
@@ -32,14 +31,16 @@ class Object:
                 **args: func arguments
             """
             response = func(self, **args)
+            print(f'Status code: {response.status_code}\n')
             if 200 <= response.status_code < 300:
-                print('Status OK\n')
                 return response
             else:
-                print('Status Failed\n')
                 return False
 
         return wrapper
+
+    def get_create_dictionary(self):
+        pass
 
     @check_response
     def add(self, **item):
@@ -51,24 +52,28 @@ class Object:
             Comments: post_id, name, email, body
             Todos: user_id, title, due_on, status
         """
-        d = {key: value for key, value in item.items()}
+        json_add = self.__class__.get_create_dictionary(self)
 
         try:
             response = requests.post(
                 self.url,
-                json=d,
+                json=json_add,
                 headers=Object.my_headers
             )
-        except requests.exceptions.ConnectionError:
-            print("Connection Error")
-            time.sleep(2)
-        except:
-            print('Something went wrong with creating the object')
+        except requests.exceptions.ConnectionError as err:
+            print("Connection Error: ", err)
+        except requests.exceptions.HTTPError as err:
+            print("HTTP Error: ", err)
+        except requests.exceptions.Timeout as err:
+            print("Timeout Error: ", err)
+        except requests.exceptions.RequestException as err:
+            print("An error occured: ", err)
+
+
         else:
             print(response.json())
-            print(f'Status code: {response.status_code}')
-            self.id = response.json()['data']['id']
             try:
+                self.id = response.json()['data']['id']
                 Object.objects.append(
                     {
                         'type': self,
@@ -76,8 +81,9 @@ class Object:
                         'id': response.json()['data']['id']
                     }
                 )
-            except:
-                print('Response may be empty')
+            except Exception as err:
+                print(f"ID doesn't exist: {err}")
+
         return response
 
     @check_response
@@ -88,15 +94,17 @@ class Object:
 
         try:
             response = requests.get(f'{self.url}/{self.id}')
-        except requests.exceptions.ConnectionError:
-            print("Connection Error")
-            time.sleep(2)
-        except:
-            print('Something went wrong with object fetching')
+        except requests.exceptions.ConnectionError as err:
+            print("Connection Error: ", err)
+        except requests.exceptions.HTTPError as err:
+            print("HTTP Error: ", err)
+        except requests.exceptions.Timeout as err:
+            print("Timeout Error: ", err)
+        except requests.exceptions.RequestException as err:
+            print("An error occured: ", err)
 
         else:
             print(response.json())
-            print(f'GET status: {response.status_code}')
         return response
 
     @check_response
@@ -110,13 +118,14 @@ class Object:
                 f'{self.url}/{self.id}',
                 headers=Object.my_headers
             )
-        except requests.exceptions.ConnectionError:
-            print("Connection Error")
-            time.sleep(2)
-        except:
-            print('Something went wrong with deleting the object')
-        else:
-            print(f'DELETE status: {response.status_code}')
+        except requests.exceptions.ConnectionError as err:
+            print("Connection Error: ", err)
+        except requests.exceptions.HTTPError as err:
+            print("HTTP Error: ", err)
+        except requests.exceptions.Timeout as err:
+            print("Timeout Error: ", err)
+        except requests.exceptions.RequestException as err:
+            print("An error occured: ", err)
         return response
 
     @classmethod
@@ -140,10 +149,15 @@ class Object:
         for obj in items:
             print(f'Deleting item {items.index(obj) + 1}: id = {obj.get("id")}')
             try:
-                time.sleep(1)
                 response = obj.get('type').delete()
-            except:
-                print('Something went wrong with deleting the item')
+            except requests.exceptions.ConnectionError as err:
+                print("Connection Error: ", err)
+            except requests.exceptions.HTTPError as err:
+                print("HTTP Error: ", err)
+            except requests.exceptions.Timeout as err:
+                print("Timeout Error: ", err)
+            except requests.exceptions.RequestException as err:
+                print("An error occured: ", err)
             else:
                 if response:
                     nr += 1
