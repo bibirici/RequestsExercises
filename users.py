@@ -23,11 +23,6 @@ class User(Object):
         return json_add
 
 
-    def add(self):
-        """
-        Overrided method which calls parent's method for adding an user object
-        """
-        return super().add(name = self.name, email = self.email, gender = self.gender, status = self.status)
 
 
 

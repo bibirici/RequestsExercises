@@ -22,10 +22,6 @@ class Todo(Object):
         }
         return json_add
 
-    def add(self):
-        """
-        Overrided method which calls parent's method for adding a todo object
-        """
-        return super().add(user_id = self.user_id, title = self.title, due_on = self.due_on, status = self.status)
+
 
 

@@ -24,13 +24,13 @@ class Object:
             func: function that is decorated
         """
 
-        def wrapper(self, **args):
+        def wrapper(self, method, json_add=None):
             """
             wrapper method modifies the func function
             Parameters:
                 **args: func arguments
             """
-            response = func(self, **args)
+            response = func(self, method, json_add)
             print(f'Status code: {response.status_code}\n')
             if 200 <= response.status_code < 300:
                 return response
@@ -43,7 +43,36 @@ class Object:
         pass
 
     @check_response
-    def add(self, **item):
+    def request_method(self, method, json_add=None):
+        if method == 'post':
+            response = requests.post(
+                self.url,
+                json=json_add,
+                headers=Object.my_headers
+            )
+        elif method == 'get':
+            response = requests.get(f'{self.url}/{self.id}')
+        elif method == 'delete':
+            response = requests.delete(
+                f'{self.url}/{self.id}',
+                headers=Object.my_headers
+            )
+        try:
+            response
+        except requests.exceptions.ConnectionError as err:
+            print("Connection Error: ", err)
+        except requests.exceptions.HTTPError as err:
+            print("HTTP Error: ", err)
+        except requests.exceptions.Timeout as err:
+            print("Timeout Error: ", err)
+        except requests.exceptions.RequestException as err:
+            print("An error occured: ", err)
+        else:
+            if method == 'get' or method == 'post':
+                print(response.json())
+        return response
+
+    def add(self):
         """
         Method that adds an object
         Parameters differ for every class that inherits this class:
@@ -54,78 +83,35 @@ class Object:
         """
         json_add = self.__class__.get_create_dictionary(self)
 
+        response = Object.request_method(self, 'post', json_add)
+
         try:
-            response = requests.post(
-                self.url,
-                json=json_add,
-                headers=Object.my_headers
+            self.id = response.json()['data']['id']
+            Object.objects.append(
+                {
+                    'type': self,
+                    'object': self.__class__.__name__,
+                    'id': response.json()['data']['id']
+                }
             )
-        except requests.exceptions.ConnectionError as err:
-            print("Connection Error: ", err)
-        except requests.exceptions.HTTPError as err:
-            print("HTTP Error: ", err)
-        except requests.exceptions.Timeout as err:
-            print("Timeout Error: ", err)
-        except requests.exceptions.RequestException as err:
-            print("An error occured: ", err)
-
-
-        else:
-            print(response.json())
-            try:
-                self.id = response.json()['data']['id']
-                Object.objects.append(
-                    {
-                        'type': self,
-                        'object': self.__class__.__name__,
-                        'id': response.json()['data']['id']
-                    }
-                )
-            except Exception as err:
-                print(f"ID doesn't exist: {err}")
+        except Exception as err:
+            print(f"ID doesn't exist: {err}")
 
         return response
 
-    @check_response
     def get(self):
         """
         Method that retrieves an object or more objects
         """
-
-        try:
-            response = requests.get(f'{self.url}/{self.id}')
-        except requests.exceptions.ConnectionError as err:
-            print("Connection Error: ", err)
-        except requests.exceptions.HTTPError as err:
-            print("HTTP Error: ", err)
-        except requests.exceptions.Timeout as err:
-            print("Timeout Error: ", err)
-        except requests.exceptions.RequestException as err:
-            print("An error occured: ", err)
-
-        else:
-            print(response.json())
+        response = Object.request_method(self, 'get')
         return response
 
-    @check_response
     def delete(self):
         """
         Method that deletes the current object
         """
+        response = Object.request_method(self, 'delete')
 
-        try:
-            response = requests.delete(
-                f'{self.url}/{self.id}',
-                headers=Object.my_headers
-            )
-        except requests.exceptions.ConnectionError as err:
-            print("Connection Error: ", err)
-        except requests.exceptions.HTTPError as err:
-            print("HTTP Error: ", err)
-        except requests.exceptions.Timeout as err:
-            print("Timeout Error: ", err)
-        except requests.exceptions.RequestException as err:
-            print("An error occured: ", err)
         return response
 
     @classmethod
@@ -148,19 +134,9 @@ class Object:
         print(f'{len(items)} items to be deleted')
         for obj in items:
             print(f'Deleting item {items.index(obj) + 1}: id = {obj.get("id")}')
-            try:
-                response = obj.get('type').delete()
-            except requests.exceptions.ConnectionError as err:
-                print("Connection Error: ", err)
-            except requests.exceptions.HTTPError as err:
-                print("HTTP Error: ", err)
-            except requests.exceptions.Timeout as err:
-                print("Timeout Error: ", err)
-            except requests.exceptions.RequestException as err:
-                print("An error occured: ", err)
-            else:
-                if response:
-                    nr += 1
+            response = obj.get('type').delete()
+            if response:
+                nr += 1
 
         if nr == len(items):
             print("Cleanup successful")

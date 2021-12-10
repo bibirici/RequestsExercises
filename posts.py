@@ -20,11 +20,7 @@ class Post(Object):
         }
         return json_add
 
-    def add(self):
-        """
-        Overrided method which calls parent's method for adding a post object
-        """
-        return super().add(user_id = self.user_id, title = self.title, body = self.body)
+
 
 
 
