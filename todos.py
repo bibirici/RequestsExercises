@@ -14,6 +14,9 @@ class Todo(Object):
         self.status = status
 
     def get_create_dictionary(self):
+        """
+        Method that creates the json required for adding a Todo object
+        """
         json_add = {
             'user_id': self.user_id,
             'title': self.title,

@@ -14,6 +14,9 @@ class User(Object):
         self.status = status
 
     def get_create_dictionary(self):
+        """
+        Method that creates the json required for adding an User object
+        """
         json_add = {
             'name': self.name,
             'email': self.email,

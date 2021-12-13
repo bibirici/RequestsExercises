@@ -13,6 +13,9 @@ class Post(Object):
         self.body = body
 
     def get_create_dictionary(self):
+        """
+        Method that creates the json required for adding a Post object
+        """
         json_add = {
             'user_id': self.user_id,
             'title': self.title,

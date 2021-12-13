@@ -14,6 +14,9 @@ class Comment(Object):
         self.body = body
 
     def get_create_dictionary(self):
+        """
+        Method that creates the json required for adding a Comment object
+        """
         json_add = {
             'post_id': self.post_id,
             'name': self.name,

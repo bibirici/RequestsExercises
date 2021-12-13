@@ -41,6 +41,9 @@ class Object:
         return wrapper
 
     def get_create_dictionary(self):
+        """
+        Method that creates the dictionary for each object
+        """
         pass
 
     @check_response
@@ -112,6 +115,9 @@ class Object:
 
     @classmethod
     def get_all(cls):
+        """
+        This method retrieves all created objects
+        """
         for obj in Object.objects:
             if obj.get('object') == cls.__name__ or cls.__name__ == 'Object':
                 obj.get('type').get()
