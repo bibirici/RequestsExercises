@@ -28,7 +28,8 @@ class TestClass():
 
     @pytest.mark.parametrize('name, gender, status',
                              [
-                                 ('asd2', 'male', 'active')
+                                 ('asd2', 'male', 'active'),
+                                 ('asd3', 'male', 'active')
                              ]
                              )
     def test_add_user_without_email(self, name, gender, status):
@@ -37,7 +38,8 @@ class TestClass():
 
     @pytest.mark.parametrize('name, email, gender, status',
                                 [
-                                    ('asd2', 'asdaTEST1234AA@yahoo.com', 'male', 'active')
+                                    ('asd2', 'asdaTEST1234AA@yahoo.com', 'male', 'active'),
+                                    ('asd2', 'user@yahoo.com', 'female', 'active')
                                 ]
                              )
     def test_add_existing_user(self, name, email, gender, status):
@@ -46,7 +48,8 @@ class TestClass():
 
     @pytest.mark.parametrize('name, email, gender, status',
                                 [
-                                    ('asd2', 'asdafadsdAA1A5555Assss@yahoo.com', 'male', 'active')
+                                    ('asd2', 'asdafadsdAA1A5555Assss@yahoo.com', 'male', 'active'),
+                                    ('asd3', 'asdafadsdAA1A5555Asaasss@yahoo.com', 'male', 'active')
                                 ]
                              )
     def test_delete_user(self, name, email, gender, status):
@@ -57,7 +60,8 @@ class TestClass():
 
     @pytest.mark.parametrize('user_id, title, body',
                                 [
-                                    (28, 'title', 'body')
+                                    (28, 'title', 'body'),
+                                    (28, 'title1', 'body1')
                                 ]
                             )
     def test_add_post(self, user_id, title, body):
@@ -69,7 +73,8 @@ class TestClass():
 
     @pytest.mark.parametrize('title, body',
                              [
-                                 ('title', 'body')
+                                 ('title', 'body'),
+                                 ('title1', 'body1')
                              ]
                              )
     def test_add_post_without_uid(self, title, body):
@@ -78,7 +83,8 @@ class TestClass():
 
     @pytest.mark.parametrize('user_id, body',
                              [
-                                 (28, 'body')
+                                 (28, 'body'),
+                                 (28, 'body1')
                              ]
                              )
     def test_add_post_without_title(self, user_id, body):
@@ -87,7 +93,8 @@ class TestClass():
 
     @pytest.mark.parametrize('user_id, title, body',
                                 [
-                                    (28, 'title1', 'body1')
+                                    (28, 'title1', 'body1'),
+                                    (28, 'title12', 'body12')
                                 ]
                             )
     def test_delete_post(self, user_id, title, body):
@@ -110,7 +117,8 @@ class TestClass():
 
     @pytest.mark.parametrize('title, due_on, status',
                              [
-                                 ('title1', '2021-12-16T00:00:00.000+04:30', 'pending')
+                                 ('title1', '2021-12-16T00:00:00.000+04:30', 'pending'),
+                                 ('title2', '2021-12-16T00:00:00.000+05:30', 'pending')
                              ]
                              )
     def test_add_todo_without_uid(self, title, due_on, status):
@@ -119,7 +127,8 @@ class TestClass():
 
     @pytest.mark.parametrize('user_id, due_on, status',
                              [
-                                 (28, '2021-12-16T00:00:00.000+04:30', 'pending')
+                                 (28, '2021-12-16T00:00:00.000+04:30', 'pending'),
+                                 (28, '2021-11-11T00:00:00.000+02:30', 'pending')
                              ]
                              )
     def test_add_todo_without_title(self, user_id, due_on, status):
@@ -128,7 +137,8 @@ class TestClass():
 
     @pytest.mark.parametrize('user_id, title, due_on, status',
                             [
-                                (28, 'title2', '2021-12-18T00:00:00.000+02:30', 'pending')
+                                (28, 'title2', '2021-12-18T00:00:00.000+02:30', 'pending'),
+                                (28, 'title3', '2021-12-11T00:00:00.000+03:30', 'pending')
                             ]
                             )
     def test_delete_todo(self, user_id, title, due_on, status):
@@ -153,11 +163,6 @@ class TestClass():
         TOML.toml_input(users_objects)
         assert len(Object.objects) == 5
 
-# class UnitTest(unittest.TestCase):
-#     def test_delete_post(self):
-#         p1 = Post(46, 'title', 'body')
-#         assert p1.add()
-#         print(p1.get().json().get('data')['title'])
 
 
 

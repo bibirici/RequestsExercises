@@ -42,7 +42,7 @@ class TOML:
               uid(optional): id of an created user
               Possible values for uid:
                 if uid is not provided, uid is obtained from TOML file,
-                uid can be 'r' for a random user
+                uid can be 'random' for a random user
         """
         for post in posts.values():
             if uid == 'random':
@@ -61,7 +61,7 @@ class TOML:
               uid(optional): id of an created user
               Possible values for uid:
                 if uid is not provided, uid is obtained from TOML file,
-                uid can be 'r' for a random user
+                uid can be 'random' for a random user
         """
         for todo in todos.values():
             if uid == 'random':

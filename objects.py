@@ -28,7 +28,8 @@ class Object:
             """
             wrapper method modifies the func function
             Parameters:
-                **args: func arguments
+                method: request method
+                json_add: data that is added for post request
             """
             response = func(self, method, json_add)
             print(f'Status code: {response.status_code}\n')
@@ -75,11 +76,6 @@ class Object:
     def add(self):
         """
         Method that adds an object
-        Parameters differ for every class that inherits this class:
-            Posts: user_id, title, body
-            Users: name, email, gender, status
-            Comments: post_id, name, email, body
-            Todos: user_id, title, due_on, status
         """
         json_add = self.__class__.get_create_dictionary(self)
 
@@ -101,7 +97,7 @@ class Object:
 
     def get(self):
         """
-        Method that retrieves an object or more objects
+        Method that retrieves the current object
         """
         response = Object.request_method(self, 'get')
         return response
