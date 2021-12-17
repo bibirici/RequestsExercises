@@ -1,0 +1,64 @@
+Users:
+test_add_new_user()
+-adaugare user inexistent + verificare adaugare
+
+test_add_existing_user()
+-adaugare user existent
+
+test_add_user_without_email()
+-adaugare user fara email
+
+test_add_user_without_name()
+-adaugare user fara nume
+
+test_add_user_without_gender()
+-adaugare user fara gen
+
+test_add_user_without_status()
+-adaugare user fara status
+
+test_delete_user
+-verificare stergere user 
+
+Posts:
+test_add_post()
+-adaugare post cu user_id existent + verificare adaugare
+
+test_add_post_without_uid
+-adaugare post cu user_id inexistent
+
+test_add_post_without_title()
+-adaugare post fara titlu
+
+test_add_post_without_body()
+-adaugare post fara body
+
+test_delete_post()
+-verificare stergere post 
+
+
+Todos:
+test_add_todo()
+-adaugare todo cu user_id existent + verificare adaugare
+
+test_add_todo_without_id
+-adaugare todo cu user_id inexistent
+
+test_add_todo_without_title
+-adaugare todo fara titlu
+
+test_add_todo_without_due_on
+-adaugare todo fara due_on
+
+test_add_todo_without_status
+-adaugare todo fara status
+
+test_delete_todo
+-verificare stergere todo 
+
+
+TOML:
+-verificare toml cu posts + user_id random
+-verificare toml cu todos + user_id random
+-verificare toml cu users + user_id random
+-verificare toml cu users si objects
