@@ -3,6 +3,7 @@ import random
 from users import User
 from posts import Post
 from todos import Todo
+from comments import Comment
 from objects import Object
 
 class TOML:
@@ -72,6 +73,17 @@ class TOML:
             t1.add()
 
     @staticmethod
+    def create_comments(comments):
+        """
+        Method that creates comments from a TOML file
+        Parameters:
+              comments: a TOML file with one or more comments
+        """
+        for comment in comments.values():
+            c1 = Comment(comment.get('post_id'), comment.get('name'), comment.get('email'), comment.get('body'))
+            c1.add()
+
+    @staticmethod
     def get_random_user():
         """
         Method that returns an id of a random user
@@ -96,9 +108,11 @@ class TOML:
         users = text.get('users', {})
         posts = text.get('posts', {})
         todos = text.get('todos', {})
+        comments = text.get('comments', {})
         TOML.create_users(users)
         TOML.create_posts(posts, p_users)
         TOML.create_todos(todos, t_users)
+        TOML.create_comments(comments)
 
 
 

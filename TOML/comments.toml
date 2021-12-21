@@ -1,0 +1,38 @@
+[comments]
+	[comments.comment1]
+	post_id = 1071
+	name = 'user1'
+	email = 'user1@yahoo.com'
+	body = 'Rerum reiciendis aut. Corporis ipsa cupiditate. Dolores exercitationem quidem.'
+
+	[comments.comment2]
+	post_id = 5555
+	name = 'user2'
+	email = 'user2@yahoo.com'
+	body = 'Rerum reiciendis aut. Corporis ipsa cupiditate. Dolores exercitationem quidem.'
+
+	[comments.comment3]
+	post_id = ''
+	name = 'user3'
+	email = 'user3@yahoo.com'
+	body = 'Rerum reiciendis aut. Corporis ipsa cupiditate. Dolores exercitationem quidem.'
+
+	[comments.comment4]
+	post_id = 28
+	name = ''
+	email = 'user4@yahoo.com'
+	body = 'Rerum reiciendis aut. Corporis ipsa cupiditate. Dolores exercitationem quidem.'
+
+	[comments.comment5]
+	post_id = 28
+	name = 'user5'
+	email = ''
+	body = 'Rerum reiciendis aut. Corporis ipsa cupiditate. Dolores exercitationem quidem.'
+
+	[comments.comment6]
+	post_id = 28
+	name = 'user5'
+	email = 'user6@yahoo.com'
+	body = ''
+
+	

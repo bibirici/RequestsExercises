@@ -1,24 +1,19 @@
 [posts]
 	[posts.post1]
-	title = "asd1"
-	body = "asd1"
-	user_id = 25772
+	title = "asd11"
+	body = "asd11"
+	user_id = 1020
 
 	[posts.post2]
-	title = "asd2"
-	body = "asd2"
-	user_id = 25772
+	title = "asd22"
+	body = "asd22"
+	user_id = 1020
 
 [todos]
 	[todos.todo1]
 	title = "title2"
-	due_on = "2021-12-15T00:00:00.000+04:30"
+	due_on = "2021-12-15T00:00:00.000+01:30"
 	status = "pending"
-	user_id = 25772
+	user_id = 1020
 
-	[todos.todo2]
-	title = "title3"
-	due_on = "2021-12-15T00:00:00.000+05:30"
-	status = "pending"
-	user_id = 25772
 
