@@ -1,17 +1,31 @@
 from objects import Object
 
-class Posts(Object):
-    def __init__(self):
-        self.url = "https://gorest.co.in/public/v1/posts"
+class Post(Object):
 
-    def add(self, user_id, title, body):
-        return super().add(user_id = user_id, title = title, body = body)
+    def __init__(self, user_id, title, body):
+        """
+        Constructor for Posts class
+        """
+        self.id = None
+        self.url = Object.base_url + '/posts'
+        self.user_id = user_id
+        self.title = title
+        self.body = body
 
-    def get(self, id=''):
-        return super().get(id = id)
+    def get_create_dictionary(self):
+        """
+        Method that creates the json required for adding a Post object
+        """
+        json_add = {
+            'user_id': self.user_id,
+            'title': self.title,
+            'body': self.body
+        }
+        return json_add
 
-    def delete(self, id=''):
-        return super().delete(id = id)
+
+
+
 
 
 

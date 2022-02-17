@@ -1,16 +1,32 @@
 from objects import Object
 
-class Users(Object):
-    def __init__(self):
-        self.url = "https://gorest.co.in/public/v1/users"
+class User(Object):
 
-    def add(self, name, email, gender, status):
-        return super().add(name = name, email = email, gender = gender, status = status)
+    def __init__(self, name, email, gender, status):
+        """
+        Constructor for Users class
+        """
+        self.url = Object.base_url + '/users'
+        self.id = None
+        self.name = name
+        self.email = email
+        self.gender = gender
+        self.status = status
 
-    def get(self, id=''):
-        return super().get(id = id)
+    def get_create_dictionary(self):
+        """
+        Method that creates the json required for adding an User object
+        """
+        json_add = {
+            'name': self.name,
+            'email': self.email,
+            'gender': self.gender,
+            'status': self.status
+        }
+        return json_add
 
-    def delete(self, id):
-        return super().delete(id = id)
+
+
+
 
 

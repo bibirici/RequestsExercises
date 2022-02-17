@@ -1,0 +1,29 @@
+[users]
+	[users.user1]
+	name = "test1"
+	email = "User_test1ASKklsSs232s21@yahoo.com"
+	gender = "male"
+	status = "active"
+		[users.user1.todos]
+			[users.user1.todos.todo1]
+			title = 'title'
+			due_on = '2021-12-11T00:00:00.000+02:30'
+			status = 'pending'
+
+	[users.user2]
+	name = "test2"
+	email = "User_test2SDKKLOs3s32s221@yahoo.com"
+	gender = "male"
+	status = "active"
+
+		[users.user2.todos]
+			[users.user2.todos.todo1]
+			title = 'title'
+			due_on = '2021-12-15T00:00:00.000+05:30'
+			status = 'pending'
+
+		[users.user2.posts]
+			[users.user2.posts.post1]
+			title = 'title1'
+			body = 'body1'
+

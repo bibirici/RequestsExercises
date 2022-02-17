@@ -1,0 +1,49 @@
+class TestAddObjects:
+-adaugare user + verificare adaugare
+-stergere user + verificare stergere
+-adaugare post + verificare adaugare
+-stergere post + verificare stergere
+-adaugare todo + verificare adaugare
+-stergere todo + verificare stergere
+-adaugare comment + verificare adaugare
+-stergere comment + verificare stergere
+
+class TestUser:
+din TOML
+-adaugare user inexistent
+-adaugare user existent
+-adaugare user fara email
+-adaugare user fara nume
+-adaugare user fara gen
+-adaugare user fara status
+
+
+class TestPost:
+din TOML
+-adaugare post cu user_id existent
+-adaugare post cu user_id inexistent
+-adaugare post fara titlu
+-adaugare post fara body
+
+
+class TestTodo:
+din TOML
+-adaugare todo cu user_id existent + verificare adaugare
+-adaugare todo cu user_id inexistent
+-adaugare todo fara titlu
+-adaugare todo fara due_on
+-adaugare todo fara status
+
+class TestComment:
+din TOML
+-adaugare comment cu post_id existent
+-adaugare comment cu post_id inexistent
+-adaugare comment fara name
+-adaugare comment fara email
+-adaugare comment fara body
+
+class TestUsersObjects:
+din TOML
+- adaugare user + adaugare obiecte pentru acel user
+
+

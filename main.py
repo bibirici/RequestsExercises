@@ -1,105 +1,129 @@
-from users import Users
-from posts import Posts
-from comments import Comments
-from todos import Todos
-import unittest
 import pytest
+import datetime
 from objects import Object
+from users import User
+from posts import Post
+from comments import Comment
+from todos import Todo
 from tomls import TOML
-import time
 
-# class UserTesting(unittest.TestCase):
-#
-#     def test_get_user(self):
-#         u = Users()
-#         assert u.get()
-#
-#     def test_add_user(self):
-#         u = Users()
-#         assert u.add('asdfag', 'asdfas8172@yahoo.com', 'male', 'active')
-#
-#     def test_delete_user(self):
-#         u = Users()
-#         assert u.delete(42)
-#
-# class PostTesting(unittest.TestCase):
-#
-#     def test_get_post(self):
-#         p = Posts()
-#         assert p.get()
-#
-#     def test_add_post(self):
-#         p = Posts()
-#         assert p.add(50, 'asd', 'asd')
-#
-#     def test_delete_post(self):
-#         p = Posts()
-#         assert p.delete(60)
-#
-# class CommentTesting(unittest.TestCase):
-#
-#     def test_get_comment(self):
-#         c = Comments()
-#         assert c.get()
-#
-#     def test_add_comment(self):
-#         c = Comments()
-#         assert c.add(3, 'asd123', 'asd123@yahoo.com', 'body')
-#
-#     def test_delete_comment(self):
-#         c = Comments()
-#         assert c.delete(39)
-#
-# class TodoTesting(unittest.TestCase):
-#     def test_get_todo(self):
-#         t = Todos()
-#         assert t.get()
-#
-#     def test_add_todo(self):
-#         t = Todos()
-#         assert t.add(17, 'title', '2021-12-15T00:00:00.000+05:30', 'pending')
-#
-#     def test_delete_todo(self):
-#         t = Todos()
-#         assert t.delete(26)
-#
-# class CleanupTesting(unittest.TestCase):
-#
-#     def test_cleanup(self):
-#         time.sleep(1)
-#         u = Users()
-#         u.add('asdfag', 'asdfas12833@yahoo.com', 'male', 'active')
-#         t = Todos()
-#         t.add(17, 'title', '2021-12-15T00:00:00.000+05:30', 'pending')
-#         c = Comments()
-#         c.add(60, 'asd123', 'asd123@yahoo.com', 'body')
-#         p = Posts()
-#         p.add(60, 'asd1', 'asd1')
-#         time.sleep(1)
-#         Object.cleanup()
-#         time.sleep(1)
+@pytest.fixture
+def cleanup_method():
+    end_time = datetime.datetime.now()
+    yield end_time
+    Object.cleanup()
 
-class TestTOML:
+@pytest.fixture
+def time_difference():
+    current_time = datetime.datetime.now()
+    yield current_time
+    finish_time = datetime.datetime.now()
+    diff = finish_time - current_time
+    print(f' Test execution time: {diff}')
 
-    def test_users_toml(self):
-        users = TOML.create_users()
-        assert users == TOML.get_number_of_users()
 
-    def test_posts_toml(self):
-        posts = TOML.create_posts_for_user()
-        assert posts == TOML.get_number_of_posts()
+class TestAddObjects():
+    @pytest.mark.parametrize('name, email, gender, status',
+                                [
+                                    ('asd2', 'asdaTEST123JkOsp22s1@yahoo.com', 'male', 'active')
+                                ]
+                             )
+    def test_add_new_user(self, name, email, gender, status, time_difference):
+        u1 = User(name, email, gender, status)
+        assert u1.add()
+        assert u1.get().json().get('data')['name'] == name
+        assert u1.get().json().get('data')['email'] == email
+        assert u1.get().json().get('data')['gender'] == gender
+        assert u1.get().json().get('data')['status'] == status
+        assert u1.delete()
+        assert not u1.get()
 
-    def test_todos_toml(self):
-        todos = TOML.create_todos_for_user()
-        assert todos == TOML.get_number_of_todos()
+    @pytest.mark.parametrize('user_id, title, body',
+                                [
+                                    (1020, 'title', 'body')
+                                ]
+                            )
+    def test_add_post(self, user_id, title, body, time_difference):
+        p1 = Post(user_id, title, body)
+        assert p1.add()
+        assert p1.get().json().get('data')['user_id'] == user_id
+        assert p1.get().json().get('data')['title'] == title
+        assert p1.get().json().get('data')['body'] == body
+        assert p1.delete()
+        assert not p1.get()
 
-    def test_users_objects_toml(self):
-        t = TOML.create_users_objects()
-        u = TOML.get_number_of_users_objects()
-        assert t >= u
 
-    def test_users_objects_toml1(self):
-        t = TOML.create_users_objects()
-        u = TOML.get_number_of_users_objects()
-        assert t >= u
+    @pytest.mark.parametrize('user_id, title, due_on, status',
+                                [
+                                    (1020, 'title1asd', '2021-07-07T00:00:00.000+01:30', 'pending')
+                                ]
+                            )
+    def test_add_todo(self, user_id, title, due_on, status, time_difference):
+        t1 = Todo(user_id, title, due_on, status)
+        assert t1.add()
+        assert t1.get().json().get('data')['user_id'] == user_id
+        assert t1.get().json().get('data')['title'] == title
+        assert t1.get().json().get('data')['status'] == status
+        assert t1.delete()
+        assert not t1.get()
+
+
+    @pytest.mark.parametrize('post_id, name, email, body',
+                                [
+                                    (1071, 'testname', 'testname@yahoo.com', 'testbody')
+                                ]
+                            )
+    def test_add_comment(self, post_id, name, email, body, cleanup_method, time_difference):
+        c1 = Comment(post_id, name, email, body)
+        assert c1.add()
+        assert c1.get().json().get('data')['post_id'] == post_id
+        assert c1.get().json().get('data')['name'] == name
+        assert c1.get().json().get('data')['email'] == email
+        assert c1.get().json().get('data')['body'] == body
+        assert c1.delete()
+        assert not c1.get()
+
+
+class TestUser():
+
+    @pytest.mark.parametrize('users', ["C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/users.toml"])
+    def test_toml_users(self, users, cleanup_method, time_difference):
+        TOML.toml_input(users)
+        assert len(Object.objects) == 1
+
+class TestTodo():
+    @pytest.mark.parametrize('todos', ["C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/todos.toml"])
+    def test_toml_todos(self, todos, cleanup_method, time_difference):
+        TOML.toml_input(todos)
+        assert len(Object.objects) == 2
+
+class TestPost():
+    @pytest.mark.parametrize('posts', ["C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/posts.toml"])
+    def test_toml_posts(self, posts, cleanup_method, time_difference):
+        TOML.toml_input(posts)
+        assert len(Object.objects) == 1
+
+class TestComment():
+    @pytest.mark.parametrize('comments', ["C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/comments.toml"])
+    def test_toml_posts(self, comments, cleanup_method, time_difference):
+        TOML.toml_input(comments)
+        assert len(Object.objects) == 1
+
+class TestUsersObjects():
+    @pytest.mark.parametrize('users_objects', ["C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/input_file.toml"])
+    def test_toml_users_objects(self, users_objects, cleanup_method, time_difference):
+        TOML.toml_input(users_objects)
+        assert len(Object.objects) == 5
+
+
+# class TestPerformance():
+#     @pytest.mark.parametrize('objects', ["C:/Users/ABibirici/PycharmProjects/APIrequests/TOML/objects.toml"])
+#     def test_toml_posts(self, objects, cleanup_method):
+#         for i in range(300):
+#             TOML.toml_input(objects)
+#         assert len(Object.objects) == 900
+
+
+
+
 

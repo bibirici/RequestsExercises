@@ -1,14 +1,29 @@
 from objects import Object
 
-class Comments(Object):
-    def __init__(self):
-        self.url = "https://gorest.co.in/public/v1/comments"
+class Comment(Object):
 
-    def add(self, post_id, name, email, body):
-        return super().add(post_id = post_id, name = name, email = email, body = body)
+    def __init__(self, post_id, name, email, body):
+        """
+        Constructor for Comments class
+        """
+        self.url = Object.base_url + '/comments'
+        self.id = None
+        self.post_id = post_id
+        self.name = name
+        self.email = email
+        self.body = body
 
-    def get(self, id=''):
-        return super().get(id = id)
+    def get_create_dictionary(self):
+        """
+        Method that creates the json required for adding a Comment object
+        """
+        json_add = {
+            'post_id': self.post_id,
+            'name': self.name,
+            'email': self.email,
+            'body': self.body
+        }
+        return json_add
 
-    def delete(self, id=''):
-        return super().delete(id = id)
+
+

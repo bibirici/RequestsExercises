@@ -1,5 +1,4 @@
 import requests
-import time
 
 class Object:
     """
@@ -9,11 +8,13 @@ class Object:
         acess_token: token used for authentication for post/delete calls
     """
     objects = []
-    access_token = 'f226d8100875a550ed64ddcb80bc1a30f799b7d5621ccc6febf7ff3bc9936965'
+    access_token = '08ff96950f7b2f2094fcaf9e15fcc3e70170677916fdf997ed25f57eb6f63d73'
     my_headers = {'Authorization': 'Bearer ' + access_token}
+    base_url = "https://gorest.co.in/public/v1"
 
     def __init__(self):
-        self.url = "https://gorest.co.in/public"
+        self.id = None
+
 
     def check_response(func):
         """
@@ -22,113 +23,141 @@ class Object:
         Parameters:
             func: function that is decorated
         """
-        def wrapper(self, **args):
+
+        def wrapper(self, method, json_add=None):
             """
             wrapper method modifies the func function
             Parameters:
-                **args: func arguments
+                method: request method
+                json_add: data that is added for post request
             """
-            response = func(self, **args)
-            if response >= 200 and response < 300:
-                print('Status OK\n')
-                return True
+            response = func(self, method, json_add)
+            print(f'Status code: {response.status_code}\n')
+            if 200 <= response.status_code < 300:
+                return response
             else:
-                print('Status Failed\n')
                 return False
+
         return wrapper
 
+    def get_create_dictionary(self):
+        """
+        Method that creates the dictionary for each object
+        """
+        pass
 
     @check_response
-    def add(self, **item):
+    def request_method(self, method, json_add=None):
+        id = 0
+        if method == 'post':
+            response = requests.post(
+                self.url,
+                json=json_add,
+                headers=Object.my_headers
+            )
+        elif method == 'get':
+            response = requests.get(f'{self.url}/{self.id}')
+        elif method == 'delete':
+            response = requests.delete(
+                f'{self.url}/{self.id}',
+                headers=Object.my_headers
+            )
+            id = self.id
+            url = self.url
+        try:
+            response
+        except requests.exceptions.ConnectionError as err:
+            print("Connection Error: ", err)
+        except requests.exceptions.HTTPError as err:
+            print("HTTP Error: ", err)
+        except requests.exceptions.Timeout as err:
+            print("Timeout Error: ", err)
+        except requests.exceptions.RequestException as err:
+            print("An error occured: ", err)
+        else:
+            if method == 'get' or method == 'post':
+                print(response.json())
+            else:
+                i = 0
+                while i < len(Object.objects):
+                    if Object.objects[i].get('id') == id and Object.objects[i].get('type').url == url:
+                        del Object.objects[i]
+                        break
+                    else:
+                        i += 1
+
+        return response
+
+    def add(self):
         """
         Method that adds an object
-        Parameters differ for every type of object:
-            Posts: user_id, title, body
-            Users: name, email, gender, status
-            Comments: post_id, name, email, body
-            Todos: user_id, title, due_on, status
         """
-        d = {key:value for key, value in item.items()}
+        json_add = self.__class__.get_create_dictionary(self)
+
+        response = Object.request_method(self, 'post', json_add)
 
         try:
-            response = requests.post(self.url, json=d, headers=Object.my_headers)
-        except requests.exceptions.ConnectionError:
-            print("Connection Error")
-            time.sleep(2)
-        except:
-            print('Something went wrong with creating the object')
-        else:
-            print(response.json())
-            print(f'Status code: {response.status_code}')
-            try:
-                Object.objects.append({'type':self, 'object': self.__class__.__name__, 'id': response.json()['data']['id']})
-            except:
-                print('Response may be empty')
-        return response.status_code
+            self.id = response.json()['data']['id']
+            Object.objects.append(
+                {
+                    'type': self,
+                    'object': self.__class__.__name__,
+                    'id': response.json()['data']['id']
+                }
+            )
+        except Exception as err:
+            print(f"ID doesn't exist: {err}")
 
-    @check_response
-    def get(self, id=''):
+        return response
+
+    def get(self):
         """
-        Method that retrieves an object or more objects
-        Parameters:
-            id(optional): object's id, if not included, method will retrieve all objects
+        Method that retrieves the current object
         """
+        response = Object.request_method(self, 'get')
+        return response
 
-        try:
-            response = requests.get(f'{self.url}/{id}')
-        except requests.exceptions.ConnectionError:
-            print("Connection Error")
-            time.sleep(2)
-        except:
-            print('Something went wrong with object fetching')
-
-        else:
-            print(response.json())
-            print(f'GET status: {response.status_code}')
-        return response.status_code
-
-    @check_response
-    def delete(self, id):
+    def delete(self):
         """
-        Method that deletes an object
-        Parameters:
-            id: user's id
+        Method that deletes the current object
         """
+        response = Object.request_method(self, 'delete')
 
-        try:
-            response = requests.delete(f'{self.url}/{id}', headers=Object.my_headers)
-        except requests.exceptions.ConnectionError:
-            print("Connection Error")
-            time.sleep(2)
-        except:
-            print('Something went wrong with deleting the object')
-        else:
-            print(f'DELETE status: {response.status_code}')
-        return response.status_code
+        return response
 
-    @staticmethod
-    def cleanup():
+    @classmethod
+    def get_all(cls):
+        """
+        This method retrieves all created objects
+        """
+        for obj in Object.objects:
+            if obj.get('object') == cls.__name__ or cls.__name__ == 'Object':
+                obj.get('type').get()
+
+    @classmethod
+    def cleanup(cls):
         """
         Method that performs a cleanup for all created objects
         """
         nr = 0
-        print("Cleanup started")
+        i = 0
+        Object.objects.sort(key = lambda x: x.get('object'))
+        print("\nCleanup started")
         print(f'{len(Object.objects)} items to be deleted')
-        for obj in Object.objects:
-            url = f'{obj.get("type").url}/{obj.get("id")}'
-            try:
-                response = obj.get("type").delete(obj.get("id"))
-            except:
-                print('Something went wrong with deleting the item')
-            else:
-                print(f'Deleting item {Object.objects.index(obj) + 1}')
+        items = len(Object.objects)
+        while len(Object.objects) > 0:
+            print(f'Deleting item with id = {Object.objects[0].get("id")}')
+            response = Object.objects[0].get('type').delete()
+            i += 1
+            if response:
                 nr += 1
-        print (Object.objects)
-        if nr == len(Object.objects):
+
+        if nr == items:
             print("Cleanup successful")
-            print(f'{nr}/{len(Object.objects)} items deleted\n')
+            print(f'{nr}/{items} items deleted\n')
             return True
         else:
             print("Cleanup failed")
-            print(f'{nr}/{len(Object.objects)} items deleted\n')
+            print(f'{nr}/{items} items deleted\n')
             return False
+
